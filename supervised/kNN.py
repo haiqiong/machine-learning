@@ -1,4 +1,5 @@
 from numpy import *
+from os import listdir
 import operator
 
 #test set.
@@ -98,4 +99,49 @@ def classifyPerson():
     k = 3
     classifier = classify0(queryNorm, normMat, datingLabels, k)
     print 'You will probably like this person: ', classifier
+    
+def img2vector(filename):
+    returnVec = zeros((1, 1024))
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()
+        #lineStr = fr.readline().strip().split()
+        for j in range(32):
+            returnVec[0, 32*i+j] = int(lineStr[j])
+    return returnVec
 
+#recogonize the number 0-9 in the binary digital file.
+def digitRecognizeTest():
+    digitLabels = []
+    
+    #build up training set.
+    trainFileList = listdir('../dataset/digits/trainingDigits')
+    m = len(trainFileList)
+    # m X 1024
+    trainMat = zeros((m, 1024))
+    for i in range(m):
+        fileNameStr = trainFileList[i]
+        fileName = fileNameStr.split('.')[0]
+        classLabel = int(fileName.split('_')[0])
+        digitLabels.append(classLabel)
+        trainMat[i, :] = img2vector('../dataset/digits/TrainingDigits/%s' \
+                                    % fileNameStr)
+    
+    #build up test set
+    testFileList = listdir('../dataset/digits/testDigits')
+    mTest = len(testFileList)
+    errorCount = 0.0
+    for i in range(mTest):
+        fileNameStr = testFileList[i]
+        fileName = fileNameStr.split('.')[0]
+        testClassLabel = int(fileName.split('_')[0])
+        testVec = img2vector('../dataset/digits/testDigits/%s' % fileNameStr)
+        
+        k = 3
+        classifier = classify0(testVec, trainMat, digitLabels, k)
+        print 'the classifier is: %s, the real class is: %s' \
+              % (classifier, testClassLabel)
+        if (cmp(classifier, testClassLabel) != 0):
+            errorCount += 1.0
+    print '\nthe total number of errors is: %d' % errorCount
+    print '\nthe total error rate is: %f' % (errorCount/float(mTest))
