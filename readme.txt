@@ -16,10 +16,13 @@ classifyPerson()
 convert the binary images to text format.
 digitRecognizeTest()  error rate: 0.011628
 
-2. decision tree
+2. decision tree using algorithm ID3
 tree.py
 (1) calculate entropy.
 (2) find out the best splitting feature to make dataset organized best.
 (3) build a decision tree by recursivly choosing the best splitting.
 (4) get the number of leaves and the depth.
+(5) build a classifier using the decision tree from the training data.
+(6) pesisting the decision tree with pickle.
+
 

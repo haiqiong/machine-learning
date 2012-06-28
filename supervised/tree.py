@@ -126,12 +126,13 @@ def createDecisionTree(dataSet, labels):
     if len(dataSet[0]) == 1:
         return majorityCount(classList)
     
+    #bestFeature is the index of featureList
     bestFeature = chooseFeatureToSplit(dataSet)
     bestFeatureLabel = labels[bestFeature]
     
     decisionTree = {bestFeatureLabel: {}}
     #remaining features
-    del(labels[bestFeature])
+    #del(labels[bestFeature])
     
     #similar to splitDataSet()
     featureCol = [example[bestFeature] for example in dataSet]
@@ -143,7 +144,8 @@ def createDecisionTree(dataSet, labels):
     for value in uniqueFeatureVals:
         #subLables is a copy of lables. keep the original list intact for 
         #each call of createDecisionTree().
-        subLabels = labels[:]
+        subLabels = labels[:bestFeature]
+        subLabels.extend(labels[bestFeature+1:])
         #iterate all unique values from chosen feature and recursively
         #call createDecisionTree() for each split of dataset.
         decisionTree[bestFeatureLabel][value] = createDecisionTree(\
@@ -153,29 +155,27 @@ def createDecisionTree(dataSet, labels):
 
 #traverse the tree and count the leaf nodes.
 #compare two strings use cmp(), not ==
+
 def getNumLeafs(dTree):
-    numLeaf = 0
-    
+    numLeaf = 0    
     firstKey = dTree.keys()[0]
     secondDict = dTree[firstKey]
-    #print ('secondDict: ', secondDict)
-    #print ('secondDict type:', type(secondDict).__name__)
+   
     #return for the leaf nodes.
-    if cmp(type(secondDict).__name__ ,'dict') != 0:
-        return 0
+    #if cmp(type(secondDict).__name__ ,'dict') != 0:
+        #return 0
     
     for key in secondDict.keys():
-        if cmp(type(secondDict[key]).__name__,'dict') == 0:
-            #print 'pass dtree:', secondDict[key]
+        #if cmp(type(secondDict[key]).__name__,'dict') == 0:
+        if isinstance(secondDict[key], dict):
             numLeaf += getNumLeafs(secondDict[key]) 
         else:
             numLeaf += 1
             
     return numLeaf
-    
-
-#traverse the tree and count the time hitting the decision nodes.
+   
 '''
+traverse the tree and count the time hitting the decision nodes.
 the elements in dict are randomly {k: v}.
 passed dTree in recursive might be {k1:a, k2: {a, b, c}}. But getTreeDepth()
 assume dTree is {k2: {a, b, c}
@@ -187,7 +187,8 @@ def getTreeDepth(dTree):
     firstStr = dTree.keys()[0]
     secondDict = dTree[firstStr]
     for key in secondDict.keys():
-        if type(secondDict[key]).__name__ == 'dict':
+        #if type(secondDict[key]).__name__ == 'dict':
+        if isinstance(secondDict[key], dict):
             thisDepth = 1 + getTreeDepth(secondDict[key])
         else:
             thisDepth = 1
@@ -196,7 +197,7 @@ def getTreeDepth(dTree):
             depth = thisDepth
     return depth
 
-
+#artificial decision tree for testing.
 def testTree(i):
     listOfTrees = [{'no surfacing': {0: 'no', 1: {'flippers':\
                     {0: 'no', 1: 'yes'}}}},
@@ -205,4 +206,41 @@ def testTree(i):
                    ]
     return listOfTrees[i]
 
+'''
+Given decision tree and featureLabels, take the unknown data to compare it 
+against the values in the decision tree recursively until it hits a leaf node.
+'''
+def classify(decisionTree, featureList, testVec):
+    firstFeature = decisionTree.keys()[0]
+    featureIndex = featureList.index(firstFeature)
+    secondDict = decisionTree[firstFeature]
+    
+    testValue = testVec[featureIndex]
+    valueOfDict = secondDict[testValue]
+    
+    if isinstance(valueOfDict, dict):
+        classLabel = classify(valueOfDict, featureList, testVec)
+    else:
+        classLabel = valueOfDict
+        
+    return classLabel
 
+#store the decision tree using pickle.
+def storeTree(dTree, filename):
+    import pickle
+    fw = open(filename, 'w')
+    pickle.dump(dTree, fw)
+    fw.close()
+    
+#retrieve the object from pickle
+def readTree(filename):
+    import pickle
+    fr = open(filename)
+    return pickle.load(fr)
+
+def contactLenTree(filename):
+    fr = open(filename)
+    lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+    features = ['age', 'prescript', 'astigmatic', 'tearRate']
+    lenseTree = createDecisionTree(lenses, features)
+    return lenseTree
