@@ -1,4 +1,4 @@
-Machine learning using NumPy,
+Machine learning using Python and NumPy,
 by Haiqiong Yao
 6/26/2012
 
@@ -37,6 +37,15 @@ Address underflow with logarithm of probability. Consider multiple occurrances o
 Average error rate: 0.30
 recommend to remove stop words.
 
+4. logistic regression
+logRegress.py
+make a line to separate the different classes of data
+(1) Calculate the weights by an optimization algorithm, gradient ascent.
+(2) stochastic gradient ascent updates the weights for each instance in the dataset.
+(3) deal with missing values in dataset: replace the missing value with 0 in the training set and throw away the instance in test set.
+average error rate for 10 iterations: 0.37293
+
+5. 
 
 
 
