@@ -25,4 +25,20 @@ tree.py
 (5) build a classifier using the decision tree from the training data.
 (6) pesisting the decision tree with pickle.
 
+3. document classification with naive Bayes
+bayes.py
+(1) filter out malicious posts.
+Give some posts and their categories(abusive or not abusive), build a naive Bayes classifier. The feature is the presence or absence of a word.
+(2) filter out spam emails 
+Spam email with naive Bayes. Given 50 emails including normal ones and spam, randomly pick 10 of them as test set and others as training set. Average error rate for 10 times tests: 0.012
+(3) display the most common words given in two RSS feeds.
+Use feed parser to read RSS feeds.
+Address underflow with logarithm of probability. Consider multiple occurrances of one word. 
+Average error rate: 0.30
+recommend to remove stop words.
+
+
+
+
+
 
