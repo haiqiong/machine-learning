@@ -39,13 +39,30 @@ recommend to remove stop words.
 
 4. logistic regression
 logRegress.py
-make a line to separate the different classes of data
+make a line to separate the different classes of data. class labels are 0 and 1.
 (1) Calculate the weights by an optimization algorithm, gradient ascent.
 (2) stochastic gradient ascent updates the weights for each instance in the dataset.
 (3) deal with missing values in dataset: replace the missing value with 0 in the training set and throw away the instance in test set.
 average error rate for 10 iterations: 0.37293
 
-5. 
+5. support vector machines
+svm.py
+class labels are -1 and 1.
+(1) use sequential minimal optimization(SMO) to find a set of alpha and b.
+(2) imcomplete implementation. SVM is too complicated.
+
+6. AdaBoost
+adaboost.py
+(1) createe a weak learner with a decision stump.
+(2) create AdaBoost to use multiple weak learners.
+(3) implement full AdaBoost with the decision stump.
+(4) build a adaClassifier.
+error rate for horseColicTest2.txt is 0.2388 (16/67)
+
+
+
+
+
 
 
 

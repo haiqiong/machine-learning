@@ -64,7 +64,9 @@ def stocGradAscent1(dataMatIn, classMatIn, numIter = 150):
     for j in range(numIter):
         dataIndex = range(m)
         for i in range(m):
-            alpha = 4/(1.0+j+i) + 0.01
+            #alpha decreases with each iteration, but does not go to 0
+            #because of the constant.
+            alpha = 4/(1.0+j+i) + 0.0001
             randIndex = int(random.uniform(0, len(dataIndex)))
             #1 X n * n X 1 = 1 X 1
             h = sigmoid(dataMat[randIndex] * weights)
@@ -110,6 +112,7 @@ def colicTest():
         values = []
         for i in range(20):
             values.append(float(lineList[i]))
+            
         if int(classifyVector(array(values), trainWeights)) \
            != int(lineList[-1]):
             errorCount += 1
