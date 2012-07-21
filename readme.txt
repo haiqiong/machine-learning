@@ -2,6 +2,7 @@ Machine learning using Python and NumPy,
 by Haiqiong Yao
 6/26/2012
 
+/supervised
 1. k-nearest classification
 kNN.py
 the original version. 
@@ -58,6 +59,35 @@ adaboost.py
 (3) implement full AdaBoost with the decision stump.
 (4) build a adaClassifier.
 error rate for horseColicTest2.txt is 0.2388 (16/67)
+
+7. predicate continuous values with regression
+regression.py
+(1) calculate weights using mean-square error.
+(2) locally weighted linear regression.
+control k to get best-fit line as straight line or curve line. Be careful of underfitting and overfitting.
+expensive computation for using the entire dataset to make one estimate.
+(3) to solve dataset not full rank, using shrinkage methods: ridge regression, 
+
+/unsupervised
+8. k-mean cluster
+kmeans.py 
+(1) k is defined by user. group data into k clusters, the center of each cluster is the mean of the values in that cluster. k-mean is effective, but sensitive to the initial cluster placement.
+(2) iteratively cluster points. start from one cluster and split the one with lowest error. bikmean creates a better clusters than k-means.
+examples:
+(1) kmean-testSet.txt. cluster points into k=4 groups by 3 iterations.
+(2) kmean-portlandclub.txt. 
+given the address of 70 clubs in portland, group the clubs close together.
+use yahoo!PlaceFinder API to get lat and longt for a street addr.
+calculate earth distance between two points.
+use bikmean() to cluster the points.
+
+
+
+/recommendation
+8. filtering
+recommendations.py
+(1) finding similar people by calculating similarity score, Eudidean distance or pearson correlation.
+
 
 
 
